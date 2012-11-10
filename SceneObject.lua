@@ -32,3 +32,5 @@ function SceneObject:sendMessage(name, ...)
 		handler(self, name, ...)
 	end
 end
+
+return SceneObject

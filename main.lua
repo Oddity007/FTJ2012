@@ -1,5 +1,8 @@
+local SceneManager = require "SceneManager"
+local CurrentSceneManagerInstance
+
 function love.load()
-	
+	CurrentSceneManagerInstance = SceneManager()
 end
 
 function love.draw()

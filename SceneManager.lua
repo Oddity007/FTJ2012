@@ -13,3 +13,5 @@ function SceneManager:aquireObject(path, ...)
 	self.aquiredObjects[path] = aquiredObject
 	return aquiredObject
 end
+
+return SceneManager
