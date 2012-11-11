@@ -8,6 +8,16 @@ function Queue:__init__()
 end
 
 function Queue:enqueue(item)
+	if self.first > 10 then
+		local newItems = {}
+		local items = self.items
+		local first = self.first
+		for i = 0, self.count-1 do
+			newItems[i + 1] = items[first + i]
+		end
+		self.first = 0
+		self.items = newItems
+	end
 	self.count = self.count + 1
 	self.items[self.first + self.count] = item
 end
