@@ -33,7 +33,7 @@ function CurrentPlayer:onRender()
 	
 	love.graphics.setLine(3, "smooth")
 	local y = 0
-	for _, item in pairs(self.items) do
+	--[[for _, item in pairs(self.items) do
 		local name = item.name or "???"
 		love.graphics.setColor(255, 255, 255, 255)
 		love.graphics.rectangle("fill", 0, y, 120, 20)
@@ -41,7 +41,7 @@ function CurrentPlayer:onRender()
 		love.graphics.rectangle("line", 0, y, 120, 20)
 		love.graphics.print(name, 0, y)
 		y = y + 20
-	end
+	end]]
 end
 
 function CurrentPlayer:onUpdate(seconds)
@@ -97,13 +97,13 @@ function CurrentPlayer:onUpdate(seconds)
 end
 
 function CurrentPlayer:onMousePress(x, y, button)
-	if button == "r" then
-		self.firingTargetX, self.firingTargetY = x, y
+	--[[if button == "r" then
+		--self.firingTargetX, self.firingTargetY = x, y
 	elseif button == "l" then
 		local action = {x = x, y = y, type = "move"}
 		self:pushAction(action)
 		--self.targetX, self.targetY = x, y
-	end
+	end]]
 end
 
 return CurrentPlayer
