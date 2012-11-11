@@ -5,7 +5,6 @@ return function(superclass)
 	rawset(class, "__instanceMetatable__", {__index = class})
 	rawset(class, "__super__", superclass)
 	rawset(class, "__class__", class)
-	rawset(class, "__define__", rawset)
 	local classMetatable = {__index = superclass}
 	function classMetatable.__call(class, ...)
 		local instance = setmetatable({}, class.__instanceMetatable__)

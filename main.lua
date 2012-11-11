@@ -22,9 +22,7 @@ end
 --[[local targetX, targetY = 400, 400
 local time = 0]]
 function love.update(seconds)
-	if not love.keyboard.isDown(" ") then
-		CurrentGame:onUpdate(seconds)
-	end
+	CurrentGame:onUpdate(seconds)
 	--[[if love.mouse.isDown("r") then
 		targetX, targetY = love.mouse.getPosition()
 	end
@@ -50,4 +48,8 @@ end
 
 function love.mousepressed(x, y, button)
 	CurrentGame:onMousePress(x, y, button)
+end
+
+function love.keypressed(key, unicode)
+	CurrentGame:onKeyPress(key, unicode)
 end

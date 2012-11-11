@@ -17,9 +17,11 @@ function Game:onRender()
 end
 
 function Game:onUpdate(seconds)
-	for _, entity in pairs(self.entities) do
-		local f = entity.onUpdate
-		if f then f(entity, seconds) end
+	if not self.isInPlanningMode then
+		for _, entity in pairs(self.entities) do
+			local f = entity.onUpdate
+			if f then f(entity, seconds) end
+		end
 	end
 end
 
@@ -29,6 +31,12 @@ function Game:onMousePress(x, y, button)
 		if f then
 			f(entity, x, y, button)
 		end
+	end
+end
+
+function Game:onKeyPress(key, unicode)
+	if key == " " then
+		self.isInPlanningMode = not self.isInPlanningMode
 	end
 end
 
