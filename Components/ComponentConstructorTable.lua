@@ -1,1 +1,1 @@
-return {}
+return {imageRenderer = require "ImageRenderer"}

@@ -15,20 +15,34 @@ function SceneObject:setAttribute(name, to)
 	self.attributes[name] = to
 end
 
-function SceneObject:addEventHandler(handler)
-	if not self.eventHandlers then self.eventHandlers = {} end
-	self.eventHandlers[handler] = true
+function SceneObject:addMessageHandler(handler)
+	if not self.messageHandlers then self.messageHandlers = {} end
+	for i, v in pairs(self.messageHandlers) do
+		if v == handler then return false
+		else v == nil then
+			self.messageHandlers[i] = handler
+			return true
+		end
+	end
+	self.messageHandlers[#self.messageHandlers] = handler
+	return true
 end
 
-function SceneObject:removeEventHandler(handler)
-	if not self.eventHandlers then return end
-	self.eventHandlers[handler] = nil
+function SceneObject:removeMessageHandler(handler)
+	if not self.messageHandlers then return end
+	for i, v in pairs(self.messageHandlers) do
+		if v == handler then
+			self.messageHandlers[i] = nil
+			return true
+		end
+	end
+	return false
 end
 
 function SceneObject:sendMessage(name, ...)
-	local eventHandlers = self.eventHandlers
-	if not eventHandlers then return end
-	for handler, _ in pairs(eventHandlers)
+	local messageHandlers = self.messageHandlers
+	if not messageHandlers then return end
+	for handler, _ in pairs(messageHandlers)
 		handler(self, name, ...)
 	end
 end

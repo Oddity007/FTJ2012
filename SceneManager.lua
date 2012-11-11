@@ -14,4 +14,8 @@ function SceneManager:aquireObject(path, ...)
 	return aquiredObject
 end
 
+function SceneManager:getAquiredObjects()
+	return self.aquiredObjects
+end
+
 return SceneManager
