@@ -72,10 +72,9 @@ function Game:onMousePress(mouseX, mouseY, button)
 		
 		if self.selectedAction then
 			if self.selectedAction.name == "Shoot" then
-				self.entities.player.firingTargetX, self.entities.player.firingTargetY = mouseX, mouseY
+				self.entities.player:pushShootAt(mouseX, mouseY)
 			elseif self.selectedAction.name == "Move" then
-				local action = {x = mouseX, y = mouseY, type = "move"}
-				self.entities.player:pushAction(action)
+				self.entities.player:pushMoveTo(mouseX, mouseY)
 				--self.targetX, self.targetY = x, y
 			end
 		end

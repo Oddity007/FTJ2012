@@ -1,35 +1,22 @@
 local CurrentGame = ...
-local CurrentPlayer = {x = 0, y = 0, targetX = 0, targetY = 0, queuedActions = {}, items = {{name = "Can of whoopass"}}, firingTargetX = 0, firingTargetY = 0, timeSinceLastShot = 0}
+local CurrentPlayer = {x = 0, y = 0, targetX = nil, targetY = nil, items = {{name = "Can of whoopass"}}, firingTargetX = nil, firingTargetY = nil, timeSinceLastShot = 0}
 local Projectile = require "Projectile"
 
-function CurrentPlayer:pushAction(action)
-	self.queuedActions[#self.queuedActions + 1] = action
-	if self.queuedActions[1] then return end
-	local newQueuedActions = {}
-	local i = 1
-	for _, action in pairs(self.queuedActions) do
-		if action then
-			newQueuedActions[i] = action
-			i = i + 1
-		end
-	end
-	self.queuedActions = newQueuedActions
+function CurrentPlayer:pushMoveTo(x, y)
+	self.targetX, self.targetY = x, y
+end
+
+function CurrentPlayer:pushShootAt(x, y)
+	self.firingTargetX, self.firingTargetY = x, y
 end
 
 function CurrentPlayer:onRender()
 	love.graphics.setColor(0, 0, 0, 255)
 	love.graphics.circle("fill", self.x, self.y, 20, 50)
-	love.graphics.setColor(255, 255 * 0.6, 255 * 0.5, 255)
-	love.graphics.setLine(10, "smooth")
-	local lastAction = self
-	for _, action in pairs(self.queuedActions) do
-		if action then
-			--if lastAction then
-				love.graphics.line(lastAction.x, lastAction.y, action.x, action.y)
-			--end
-			lastAction = action
-		end
-	end
+	love.graphics.setColor(255, 255 * 0, 255 * 0.5, 255)
+	if self.targetX and self.targetY then love.graphics.print("Move Here", self.targetX, self.targetY) end
+	love.graphics.setColor(255, 255 * 0, 255 * 0.5, 255)
+	if self.firingTargetX and self.firingTargetY then love.graphics.print("Shoot Here", self.firingTargetX, self.firingTargetY) end
 	
 	love.graphics.setLine(3, "smooth")
 	local y = 0
@@ -49,7 +36,7 @@ function CurrentPlayer:onUpdate(seconds)
 		self.targetX, self.targetY = love.mouse.getPosition()
 	end]]
 	
-	if self.timeSinceLastShot > 0.125 then
+	if self.firingTargetX and self.firingTargetY and self.timeSinceLastShot > 0.125 then
 		self.timeSinceLastShot = 0
 		local projectile = Projectile(CurrentGame)
 		projectile.duration = 1
@@ -62,7 +49,7 @@ function CurrentPlayer:onUpdate(seconds)
 	end
 	self.timeSinceLastShot = self.timeSinceLastShot + seconds
 	
-	local firstAction = nil
+	--[[local firstAction = nil
 	local firstActionIndex = nil
 	local previousAction = nil
 	for i, action in pairs(self.queuedActions) do
@@ -72,28 +59,31 @@ function CurrentPlayer:onUpdate(seconds)
 			end
 			firstAction = action
 			--firstAction.duration = firstAction.duration - seconds
-			--[[if firstAction.duration < 0 then 
-				self.queuedActions[i] = nil
-			end]]
+			--if firstAction.duration < 0 then 
+			--	self.queuedActions[i] = nil
+			--end
 			
 			firstActionIndex = i
 			
 			break
 		end
-	end
+	end]]
 	
-	if firstAction then
+	--if firstAction then
+	if self.targetX and self.targetY then
 		local x, y = self.targetX, self.targetY
 		x, y = x - self.x, y - self.y
 		local distance = math.sqrt(x * x + y * y)
-		if distance > 10 then
+		if distance > 50 then
 			x, y = x/distance, y/distance
 			local speed = 2000 * seconds
 			self.x, self.y = self.x + x * speed, self.y + y * speed
 		else
-			self.queuedActions[firstActionIndex] = nil
+			self.targetX, self.targetY = nil, nil
+		--	self.queuedActions[firstActionIndex] = nil
 		end
 	end
+	--end
 end
 
 function CurrentPlayer:onMousePress(x, y, button)
